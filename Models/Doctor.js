@@ -17,11 +17,11 @@ const doctorSchema = new mongoose.Schema({
         required : true,
         trim : true,
     },
-    department : {
-    type : String,
-    required : true,
-    trim : true
-    },
+department: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "Department",
+  required: true,
+},
     qualification : {
         type : String,
         required : true,
