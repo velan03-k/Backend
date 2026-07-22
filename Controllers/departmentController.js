@@ -40,7 +40,62 @@ exports.getAllDepartments = async (req, res) => {
     }   
 };
 
+const UpdateDepartment = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const updatedDepartment = await Department.findByIdAndUpdate(
+      id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    if (!updatedDepartment) {
+      return res.status(404).json({
+        message: "Department not found",
+      });
+    }
+
+    res.status(200).json({
+      message: "Department updated successfully",
+      department: updatedDepartment,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+const DeleteDepartment = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const department = await Department.findByIdAndDelete(id);
+
+    if (!department) {
+      return res.status(404).json({
+        message: "Department not found",
+      });
+    }
+
+    res.status(200).json({
+      message: "Department deleted successfully",
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
 module.exports = {
     CreateDepartment: exports.createDepartment,
-    GetAllDepartments: exports.getAllDepartments
+    GetAllDepartments: exports.getAllDepartments,
+    UpdateDepartment,
+    DeleteDepartment
 };

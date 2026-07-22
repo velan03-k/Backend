@@ -1,15 +1,56 @@
 const express = require("express");
 const router = express.Router();
-const { CreateDoctor } = require("../Controllers/doctorController");
-const { GetAllDoctors } = require("../Controllers/doctorController");
-// const { GetDoctorById } = require("../Controllers/DoctorController");
-// const { UpdateDoctor } = require("../Controllers/DoctorController");
-// const { DeleteDoctor } = require("../Controllers/DoctorController");
 
-router.post("/", CreateDoctor);
-router.get("/", GetAllDoctors);
-// router.get("/:id", GetDoctorById);
-// router.put("/:id", UpdateDoctor);
-// router.delete("/:id", DeleteDoctor);
+const {
+  CreateDoctor,
+  GetAllDoctors,
+  getDoctorsByDepartment,
+  UpdateDoctor,
+  DeleteDoctor
+} = require("../Controllers/doctorController");
+
+const verifyToken = require("../Middleware/authMiddleware");
+const authorizeRole = require("../Middleware/roleMiddleware");
+
+
+// Only admin can create doctor
+router.post(
+  "/",
+  verifyToken,
+  authorizeRole("admin"),
+  CreateDoctor
+);
+
+
+// Admin and users can view doctors
+router.get(
+  "/",
+  verifyToken,
+  authorizeRole("admin", "user"),
+  GetAllDoctors
+);
+
+
+// Admin and users can filter doctors by department
+router.get(
+  "/department/:departmentId",
+  verifyToken,
+  authorizeRole("admin", "user"),
+  getDoctorsByDepartment
+);
+
+router.put(
+  "/:id",
+  verifyToken,
+  authorizeRole("admin"),
+  UpdateDoctor
+);
+
+router.delete(
+  "/:id",
+  verifyToken,
+  authorizeRole("admin"),
+  DeleteDoctor
+);
 
 module.exports = router;
