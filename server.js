@@ -26,7 +26,6 @@ mongoose
 
 // Routes
 app.use("/api/users", require("./Routers/UserRouter"));
-app.use("/api/users/login", require("./Routers/UserRouter"));
 app.use("/api/doctors", require("./Routers/DoctorRouter"));
 app.use("/api/departments", require("./Routers/Department"));
 app.use("/api/applications", require("./Routers/ApplicationRouter"));
