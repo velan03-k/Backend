@@ -5,6 +5,6 @@ const {getApplication} = require("../Controllers/aplicationController")
 
 router.post('/', createApplication);
 router.get('/', getApplication);
-router.put("/:id", updateApplicationpdateApplication);
+router.put("/:id", updateApplication);
 
 module.exports = router;
