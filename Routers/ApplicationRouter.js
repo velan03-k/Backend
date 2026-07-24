@@ -1,11 +1,18 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const {createApplication, updateApplication} = require("../Controllers/aplicationController")
-const {getApplication} = require("../Controllers/aplicationController")
 
-router.post('/', createApplication);
-router.get('/', getApplication);
+const {
+  createApplication,
+  getApplication,
+  updateApplication,
+  getMyApplications,
+} = require("../Controllers/aplicationController");
+
+const verifyToken = require("../Middleware/authMiddleware");
+
+router.post("/", verifyToken, createApplication);
+router.get("/", getApplication);
+router.get("/my", verifyToken, getMyApplications);
 router.put("/:id", updateApplication);
-router.get("/my", verifyToken, getMyApplications); // Logged-in user
 
 module.exports = router;
