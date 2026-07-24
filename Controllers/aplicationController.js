@@ -29,6 +29,7 @@ exports.createApplication = async (req, res) => {
     }
 
     const newApplication = await Application.create({
+      user: req.user.id, // Logged-in user's ID
       name,
       email,
       phone,
@@ -104,8 +105,26 @@ const updateApplication = async (req, res) => {
   }
 };
 
+exports.getMyApplications = async (req, res) => {
+  try {
+    const applications = await Application.find({
+      user: req.user.id,
+    })
+      .populate("department", "name")
+      .populate("doctor", "name");
+
+    res.status(200).json(applications);
+  } catch (error) {
+    res.status(500).json({
+      message: "Server Error",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createApplication: exports.createApplication,
   getApplication: exports.getApplication,
-  updateApplication
+  updateApplication,
+  getMyApplications: exports.getMyApplications
 };

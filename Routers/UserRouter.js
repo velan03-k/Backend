@@ -7,6 +7,9 @@ const { Checkuser } = require("../Controllers/UserController");
 router.post("/" , CreateUser);
 router.post("/login", Checkuser);
 
+router.get("/profile", auth, GetProfile);
+
+
 
 
 module.exports = router;
