@@ -67,7 +67,45 @@ exports.getApplication = async (req, res) => {
   }
 };
 
+// edit application 
+
+const updateApplication = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const updatedApplication = await Application.findByIdAndUpdate(
+      id,
+      {
+        status: req.body.status,
+        date: req.body.date,
+        time: req.body.time,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    if (!updatedApplication) {
+      return res.status(404).json({
+        success: false,
+        message: "Application not found",
+      });
+    }
+
+    res.status(200).json(updatedApplication);
+  } catch (error) {
+    console.error("Update Application Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to update application",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createApplication: exports.createApplication,
   getApplication: exports.getApplication,
+  updateApplication
 };
